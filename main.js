@@ -6,13 +6,21 @@
 
 
 
+// we can write a file by the following code
+const fs = require("fs")
+const txt = "I Love you Urmi"
+fs.writeFileSync("./loveMessage", txt)
+
+
+
+
 
 // IIFE
 // Immediately Invoked Function Expression
 
-((node) => {
-    console.log(`I will level up my skills in ${node}`);
-})("level 2")
+// ((node) => {
+//     console.log(`I will level up my skills in ${node}`);
+// })("level 2")
 
 
 
