@@ -40,7 +40,11 @@ const server = http.createServer((req, res) => {
     // res.writeHead(200, { 'Content-Type': 'text/plain' });
     console.log(req.url, req.method);
 
-    if (req.url === "/home" && req.method === "GET") {
+    const parsedURL = new URL(req.url, `http://${req.headers.host}`);
+
+    const pathName = parsedURL.pathname
+
+    if (pathName === "/home" && req.method === "GET") {
         res.writeHead(200, {
             "Content-type": "text/html",
         })
@@ -54,16 +58,22 @@ const server = http.createServer((req, res) => {
 </head>
 
 <body>
-    <h1>This is robin HTML</h1>
+    <h1>This is LOVE HTML</h1>
 </body>
 
 </html>`)
-    } else if (req.url === "/post" && req.method === "GET") {
-        res.writeHead(200, {
-            "Content-type": "application/json",
-            email: "robin@gmail.com",
-        })
-        const data = JSON.stringify(post)
+    } else if (pathName === "/post" && req.method === "GET") {
+        // res.writeHead(200, {
+        //     "Content-type": "application/json",
+        //     email: "robin@gmail.com",
+        // })
+        const query = parsedURL.searchParams
+        const postID = query.get("id")
+
+        const expectedPost = post.find(p => p.id == postID)
+        res.setHeader("Content-type", "application/json");
+        res.statusCode = 200;
+        const data = JSON.stringify(expectedPost)
         res.end(data)
     } else {
         res.end("Not Found")
